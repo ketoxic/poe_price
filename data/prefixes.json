@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1654,
+    "min": 25,
+    "max": null,
+    "text": "#% increased effect"
+  },
+  {
+    "id": 1660,
+    "min": 3,
+    "max": null,
+    "text": "Gain # Charges when you are Hit by an Enemy"
+  },
+  {
+    "id": 1645,
+    "min": 31,
+    "max": null,
+    "text": "Gain a Flask Charge when you deal a Critical Strike"
+  }
+]

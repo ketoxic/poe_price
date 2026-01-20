@@ -1,0 +1,1 @@
+{"query":{"status":{"option":"securable"},"type":"Quicksilver Flask","stats":[{"type":"and","filters":[{"id":"explicit.stat_2448920197","disabled":false,"value":{"min":25}},{"id":"explicit.stat_3182498570","disabled":false,"value":{"min":14}}],"disabled":false}]},"sort":{"price":"asc"}}
