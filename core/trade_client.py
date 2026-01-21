@@ -2,14 +2,14 @@
 
 import requests
 import json
+from core.rate_limit import rate_limited
 
 BASE_URL = "https://www.pathofexile.com/api/trade"
-LEAGUE = "Settlers"   # đổi khi cần
+LEAGUE = "Keepers"   # đổi khi cần
 
 HEADERS = {
-    "User-Agent": "poe-price-checker/1.0",
-    "Accept": "application/json",
-    "Content-Type": "application/json"
+    "User-Agent": "Ket",
+    "From":"phuket_92@gmail.com"
 }
 
 
@@ -20,19 +20,20 @@ class TradeClient:
         self.session = requests.Session()
         self.session.headers.update(HEADERS)
 
+    @rate_limited()
+    def _post(self, url, json):
+        return self.session.post(url, json=json)
+
+    @rate_limited()
+    def _get(self, url, params):
+        return self.session.get(url, params=params)
     # --------------------------------------------------
     # SEARCH
     # --------------------------------------------------
     def search(self, query: dict):
-        """
-        POST /api/trade/search/{league}
-
-        Returns:
-            (search_id, first_item_id) or (None, None)
-        """
         url = f"{BASE_URL}/search/{self.league}"
 
-        resp = self.session.post(url, json=query)
+        resp = self._post(url, json=query)
 
         if resp.status_code != 200:
             print("=== QUERY SENT ===")
@@ -42,33 +43,22 @@ class TradeClient:
             resp.raise_for_status()
 
         data = resp.json()
-
         result_ids = data.get("result", [])
+
         if not result_ids:
             return data["id"], None
 
         return data["id"], result_ids[0]
-
+        print("DEBUG status:", resp.status_code)
+        print("DEBUG text:", resp.text[:200])
     # --------------------------------------------------
     # FETCH
     # --------------------------------------------------
     def fetch(self, item_id: str, search_id: str):
-        """
-        GET /api/trade/fetch/{item_id}?query={search_id}
-
-        Returns:
-            {
-              price: float,
-              currency: str
-            }
-            or None
-        """
         url = f"{BASE_URL}/fetch/{item_id}"
-        params = {
-            "query": search_id
-        }
+        params = {"query": search_id}
 
-        resp = self.session.get(url, params=params)
+        resp = self._get(url, params=params)
         resp.raise_for_status()
 
         data = resp.json()
@@ -77,9 +67,7 @@ class TradeClient:
         if not result:
             return None
 
-        listing = result[0]["listing"]
-        price = listing.get("price")
-
+        price = result[0]["listing"].get("price")
         if not price:
             return None
 

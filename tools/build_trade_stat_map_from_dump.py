@@ -1,39 +1,12 @@
 import json
-from pathlib import Path
-import re
+import os
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-
-DUMP_FILE = DATA_DIR / "trade_stats_dump.json"
-OUT_FILE = DATA_DIR / "trade_stat_map.json"
-
-
-
-def normalize_text(text: str) -> str:
-    text = text.lower()
-
-    # bỏ nội dung trong ngoặc (nếu có)
-    text = re.sub(r"\([^)]*\)", "", text)
-
-    # bỏ ký hiệu đặc biệt
-    text = text.replace("+", "")
-    text = text.replace("#", "")
-    text = text.replace("%", "")
-    text = text.replace(",", "")
-
-    # chuẩn hóa khoảng trắng
-    text = re.sub(r"\s+", " ", text)
-
-    return text.strip()
-
-
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+DUMP_FILE = os.path.join(BASE_DIR, "data", "trade_stats_dump.json")
+OUT_FILE = os.path.join(BASE_DIR, "data", "trade_stat_map.json")
 
 
 def main():
-    if not DUMP_FILE.exists():
-        raise FileNotFoundError(f"Missing {DUMP_FILE}")
-
     with open(DUMP_FILE, "r", encoding="utf-8") as f:
         dump = json.load(f)
 
@@ -41,23 +14,25 @@ def main():
 
     for group in dump.get("result", []):
         for entry in group.get("entries", []):
+            # bạn chỉ muốn explicit
             if entry.get("type") != "explicit":
-                continue  # ← CHỈ LẤY explicit
-
-            stat_id = entry.get("id")
-            text = entry.get("text")
-
-            if not stat_id or not text:
                 continue
 
-            trade_map[normalize_text(text)] = stat_id
+            text = entry.get("text")
+            stat_id = entry.get("id")
 
-    OUT_FILE.parent.mkdir(exist_ok=True)
+            if not text or not stat_id:
+                continue
+
+            trade_map.setdefault(text, []).append({
+                "id": stat_id,
+                "type": entry.get("type")
+            })
+
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(trade_map, f, indent=2, ensure_ascii=False)
 
-    print(f"[DONE] Saved {len(trade_map)} trade stat ids")
-    print(f"→ {OUT_FILE}")
+    print(f"[OK] Written {OUT_FILE} ({len(trade_map)} texts)")
 
 
 if __name__ == "__main__":

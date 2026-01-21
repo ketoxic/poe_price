@@ -3,18 +3,21 @@
     "id": 1654,
     "min": 25,
     "max": null,
-    "text": "#% increased effect"
+    "text": "#% increased Effect",
+    "trade_stat_id": "explicit.stat_2448920197"
   },
   {
     "id": 1660,
     "min": 3,
     "max": null,
-    "text": "Gain # Charges when you are Hit by an Enemy"
+    "text": "Gain # Charge when you are Hit by an Enemy",
+    "trade_stat_id": "explicit.stat_1582728645"
   },
   {
     "id": 1645,
     "min": 31,
     "max": null,
-    "text": "Gain a Flask Charge when you deal a Critical Strike"
+    "text": "Gain a Flask Charge when you deal a Critical Strike",
+    "trade_stat_id": "explicit.stat_1546046884"
   }
 ]

@@ -1,27 +1,17 @@
+# core/query_builder.py
+
 import json
 from pathlib import Path
-from core.trade_stat_map import get_trade_stat_id
 
 # --------------------------------------------------
-# LOAD TRADE STAT MAP
+# PATHS
 # --------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
+# (giữ lại nếu chỗ khác còn dùng, builder này thì không cần)
 TRADE_STAT_MAP_FILE = DATA_DIR / "trade_stat_map.json"
-
-with open(TRADE_STAT_MAP_FILE, "r", encoding="utf-8") as f:
-    TRADE_STAT_MAP = json.load(f)
-
-
-def normalize_text(text: str) -> str:
-    return (
-        text.lower()
-        .replace("  ", " ")
-        .strip()
-    )
-
 
 
 # --------------------------------------------------
@@ -29,16 +19,26 @@ def normalize_text(text: str) -> str:
 # --------------------------------------------------
 
 def stat_filter(mod: dict) -> dict:
-    trade_id = get_trade_stat_id(mod["text"])
+    """
+    Build trade stat filter directly from enriched affix.
+    Assumes mod already has trade_stat_id.
+    """
+    trade_id = mod.get("trade_stat_id")
+
+    if not trade_id:
+        raise ValueError(f"Missing trade_stat_id for mod: {mod}")
+
+    value = {}
+    if mod.get("min") is not None:
+        value["min"] = mod["min"]
+    if mod.get("max") is not None:
+        value["max"] = mod["max"]
 
     return {
         "id": trade_id,
         "disabled": False,
-        "value": {
-            "min": mod["min"]
-        }
+        "value": value
     }
-
 
 
 # --------------------------------------------------
@@ -55,7 +55,7 @@ def build_query(flask_name: str, prefix: dict, suffix: dict) -> dict:
 
     return {
         "query": {
-            "status": {"option": "securable"},   # 🔴 BẮT BUỘC
+            "status": {"option": "securable"},   # 🔴 giữ nguyên như bạn yêu cầu
             "type": flask_name,
             "stats": [
                 {
@@ -67,3 +67,5 @@ def build_query(flask_name: str, prefix: dict, suffix: dict) -> dict:
         },
         "sort": {"price": "asc"}
     }
+
+

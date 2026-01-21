@@ -3,36 +3,42 @@
     "id": 1639,
     "min": 20,
     "max": null,
-    "text": "#% additional Elemental Resistances during Effect"
+    "text": "#% additional Elemental Resistances during Effect",
+    "trade_stat_id": "explicit.stat_962725504"
   },
   {
     "id": 1630,
     "min": 60,
     "max": null,
-    "text": "#% increased Armour during Effect"
+    "text": "#% increased Armour during Effect",
+    "trade_stat_id": "explicit.stat_1693613464"
   },
   {
     "id": 3884,
     "min": 55,
     "max": null,
-    "text": "#% increased Critical Strike Chance during Effect"
+    "text": "#% increased Critical Strike Chance during Effect",
+    "trade_stat_id": "explicit.stat_2008255263"
   },
   {
     "id": 1634,
     "min": 55,
     "max": null,
-    "text": "#% increased Evasion Rating during Effect"
+    "text": "#% increased Evasion Rating during Effect",
+    "trade_stat_id": "explicit.stat_299054775"
   },
   {
     "id": 1637,
     "min": 14,
     "max": null,
-    "text": "#% increased Movement Speed during Effect"
+    "text": "#% increased Movement Speed during Effect",
+    "trade_stat_id": "explicit.stat_3182498570"
   },
   {
     "id": 3887,
     "min": 60,
     "max": null,
-    "text": "#% reduced Effect of Curses on you during Effect"
+    "text": "#% reduced Effect of Curses on you during Effect",
+    "trade_stat_id": "explicit.stat_4265534424"
   }
 ]

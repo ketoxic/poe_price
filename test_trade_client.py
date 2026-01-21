@@ -1,26 +1,44 @@
 import json
-from core.query_builder import build_query
 from core.trade_client import TradeClient
+
 
 def main():
     client = TradeClient()
 
-    query = build_query(
-        flask_name="Quicksilver Flask",
-        prefix={
-            "text": "#% increased Effect",
-            "min": 25,
-            "max": None
+    # build query thủ công, bám sát query mẫu chạy được trên web
+    query = {
+        "query": {
+            "status": {"option": "securable"},
+            "type": "Quicksilver Flask",
+            "stats": [
+                {
+                    "type": "and",
+                    "filters": [
+                        {
+                            "id": "explicit.stat_2448920197",  # increased effect
+                            "value": {"min": 25},
+                            "disabled": False
+                        },
+                        {
+                            "id": "explicit.stat_3182498570",  # movement speed
+                            "value": {"min": 14},
+                            "disabled": False
+                        },
+                        {
+                            "id": "explicit.stat_3529940209",  # reduced duration (stat còn lại)
+                            "disabled": True
+                        }
+                    ],
+                    "disabled": False
+                }
+            ]
         },
-        suffix={
-            "text": "#% increased Movement Speed during Effect",
-            "min": 14,
-            "max": None
-        }
-    )
+        "sort": {"price": "asc"},
+        "size": 1
+    }
 
     print("=== QUERY SENT ===")
-    print(json.dumps(query, indent=2))
+    print(json.dumps(query, indent=2, ensure_ascii=False))
 
     search_id, item_id = client.search(query)
 
