@@ -1,33 +1,33 @@
 [
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% additional Elemental Resistances during Effect",
     "price": {
-      "amount": 80,
+      "amount": 66,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% increased Armour during Effect",
     "price": {
-      "amount": 100,
+      "amount": 85,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% increased Critical Strike Chance during Effect",
     "price": {
-      "amount": 280,
+      "amount": 295,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% increased Evasion Rating during Effect",
     "price": {
@@ -36,7 +36,7 @@
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% increased Movement Speed during Effect",
     "price": {
@@ -45,7 +45,7 @@
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "#% increased Effect",
     "suffix": "#% reduced Effect of Curses on you during Effect",
     "price": {
@@ -54,44 +54,53 @@
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Quicksilver Flask",
     "prefix": "Gain # Charge when you are Hit by an Enemy",
     "suffix": "#% additional Elemental Resistances during Effect",
     "price": {
-      "amount": 15,
+      "amount": 40,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
-    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
+    "suffix": "#% additional Elemental Resistances during Effect",
+    "price": {
+      "amount": 120,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
     "suffix": "#% increased Armour during Effect",
     "price": {
-      "amount": 85,
+      "amount": 95,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
-    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
     "suffix": "#% increased Critical Strike Chance during Effect",
     "price": {
-      "amount": 65,
-      "currency": "chaos"
+      "amount": 3,
+      "currency": "divine"
     }
   },
   {
-    "flask": "Quicksilver Flask",
-    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
     "suffix": "#% increased Evasion Rating during Effect",
     "price": {
-      "amount": 14,
+      "amount": 10,
       "currency": "chaos"
     }
   },
   {
-    "flask": "Quicksilver Flask",
-    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
     "suffix": "#% increased Movement Speed during Effect",
     "price": {
       "amount": 100,
@@ -99,11 +108,65 @@
     }
   },
   {
-    "flask": "Quicksilver Flask",
+    "item": "Gold Flask",
+    "prefix": "#% increased Effect",
+    "suffix": "#% reduced Effect of Curses on you during Effect",
+    "price": {
+      "amount": 60,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "suffix": "#% additional Elemental Resistances during Effect",
+    "price": {
+      "amount": 1,
+      "currency": "divine"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "suffix": "#% increased Armour during Effect",
+    "price": {
+      "amount": 300,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "suffix": "#% increased Critical Strike Chance during Effect",
+    "price": {
+      "amount": 90,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "suffix": "#% increased Evasion Rating during Effect",
+    "price": {
+      "amount": 30,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Gold Flask",
+    "prefix": "Gain # Charge when you are Hit by an Enemy",
+    "suffix": "#% increased Movement Speed during Effect",
+    "price": {
+      "amount": 2,
+      "currency": "divine"
+    }
+  },
+  {
+    "item": "Gold Flask",
     "prefix": "Gain # Charge when you are Hit by an Enemy",
     "suffix": "#% reduced Effect of Curses on you during Effect",
     "price": {
-      "amount": 80,
+      "amount": 140,
       "currency": "chaos"
     }
   }

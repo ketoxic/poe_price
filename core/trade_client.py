@@ -3,6 +3,7 @@
 import requests
 import json
 from core.rate_limit import rate_limited
+from core.currency import to_chaos
 
 BASE_URL = "https://www.pathofexile.com/api/trade"
 LEAGUE = "Keepers"   # đổi khi cần
@@ -71,7 +72,12 @@ class TradeClient:
         if not price:
             return None
 
+        chaos_amount = to_chaos(price["amount"], price["currency"])
+        if chaos_amount is None:
+            return None
+
         return {
-            "amount": price["amount"],
-            "currency": price["currency"]
+            "amount": round(chaos_amount, 2),
+            "currency": "chaos"
         }
+

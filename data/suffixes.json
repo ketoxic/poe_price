@@ -1,35 +1,35 @@
 [
   {
     "id": 1639,
-    "min": 20,
+    "min": 18,
     "max": null,
     "text": "#% additional Elemental Resistances during Effect",
     "trade_stat_id": "explicit.stat_962725504"
   },
   {
     "id": 1630,
-    "min": 60,
+    "min": 56,
     "max": null,
     "text": "#% increased Armour during Effect",
     "trade_stat_id": "explicit.stat_1693613464"
   },
   {
     "id": 3884,
-    "min": 55,
+    "min": 50,
     "max": null,
     "text": "#% increased Critical Strike Chance during Effect",
     "trade_stat_id": "explicit.stat_2008255263"
   },
   {
     "id": 1634,
-    "min": 55,
+    "min": 56,
     "max": null,
     "text": "#% increased Evasion Rating during Effect",
     "trade_stat_id": "explicit.stat_299054775"
   },
   {
     "id": 1637,
-    "min": 14,
+    "min": 12,
     "max": null,
     "text": "#% increased Movement Speed during Effect",
     "trade_stat_id": "explicit.stat_3182498570"
