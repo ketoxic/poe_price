@@ -3,7 +3,6 @@ from PyQt5.QtCore import QStringListModel
 from pathlib import Path
 import json
 from typing import Optional
-from core.price_runner import run_price_check
 
 
 class PriceWindow(QtWidgets.QWidget):
@@ -17,11 +16,21 @@ class PriceWindow(QtWidgets.QWidget):
         self.item_model = QStringListModel()
         self.list_item.setModel(self.item_model)
 
+        # cho phép chọn nhiều item
+        self.list_item.setSelectionMode(
+            QtWidgets.QAbstractItemView.ExtendedSelection
+        )
+
         # signals
         self.select_file_item.clicked.connect(self.choose_item_file)
         self.check_price_button.clicked.connect(self.start_price_check)
 
+        # optional cancel button (nếu có trong UI)
+        if hasattr(self, "cancel_button"):
+            self.cancel_button.clicked.connect(self.stop_worker)
+
         self.item_file: Optional[Path] = None
+        self.worker = None
 
     # --------------------------------------------------
     # chọn file json
@@ -57,6 +66,13 @@ class PriceWindow(QtWidgets.QWidget):
             )
 
     # --------------------------------------------------
+    # lấy item được chọn
+    # --------------------------------------------------
+    def get_selected_items(self):
+        indexes = self.list_item.selectedIndexes()
+        return [index.data() for index in indexes]
+
+    # --------------------------------------------------
     # chạy price check
     # --------------------------------------------------
     def start_price_check(self):
@@ -66,16 +82,47 @@ class PriceWindow(QtWidgets.QWidget):
             )
             return
 
+        selected_items = self.get_selected_items()
+
+        if not selected_items:
+            QtWidgets.QMessageBox.warning(
+                self, "Warning", "Please select at least 1 item"
+            )
+            return
+
         self.check_price_button.setEnabled(False)
         self.check_price_button.setText("Running...")
 
-        try:
-            run_price_check(self.item_file)
+        from gui.price_worker import PriceWorker
 
-        except Exception as e:
-            QtWidgets.QMessageBox.critical(
-                self, "Error", str(e)
-            )
+        self.worker = PriceWorker(selected_items)
 
+        self.worker.log.connect(self.append_log)
+        self.worker.error.connect(self.on_error)
+        self.worker.finished.connect(self.on_finished)
+        self.worker.finished.connect(self.worker.deleteLater)
+
+        self.worker.start()
+
+    # --------------------------------------------------
+    # stop worker
+    # --------------------------------------------------
+    def stop_worker(self):
+        if self.worker:
+            self.worker.stop()
+
+    # --------------------------------------------------
+    # handlers
+    # --------------------------------------------------
+    def on_finished(self):
         self.check_price_button.setEnabled(True)
         self.check_price_button.setText("Check Price")
+
+    def on_error(self, msg):
+        QtWidgets.QMessageBox.critical(self, "Error", msg)
+
+    def append_log(self, msg):
+        if hasattr(self, "log_box"):
+            self.log_box.append(msg)
+        else:
+            print(msg)

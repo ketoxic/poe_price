@@ -1,5 +1,3 @@
-# core/price_runner.py
-
 import json
 from pathlib import Path
 
@@ -8,7 +6,6 @@ from core.query_builder import build_query
 from core.combo_builder import build_combos
 from tools.export_to_excel import export_price_to_excel
 from core.currency import load_currency_rate
-from core.trade_client import TradeClient
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,35 +13,63 @@ RESULT_DIR = BASE_DIR / "result"
 RESULT_DIR.mkdir(exist_ok=True)
 
 
-
-def save_results(result_map, out_file: Path):
+# --------------------------------------------------
+# utils
+# --------------------------------------------------
+def save_results(result_map, out_file: Path, log_hook=None):
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(list(result_map.values()), f, indent=2, ensure_ascii=False)
 
-    print(f"💾 Saved {len(result_map)} results to {out_file.name}")
+    msg = f"💾 Saved {len(result_map)} results to {out_file.name}"
+
+    if log_hook:
+        log_hook(msg)
+    else:
+        print(msg)
 
 
-def run_price_check(item_file: Path, only_items=None):
+# --------------------------------------------------
+# main
+# --------------------------------------------------
+def run_price_check(
+    item_file: Path = None,
+    only_items=None,
+    items=None,
+    log_hook=None,
+    should_stop=None
+):
     client = TradeClient()
+
+    def log(msg):
+        if log_hook:
+            log_hook(msg)
+        else:
+            print(msg)
 
     # load rate
     load_currency_rate(client.league)
 
+    # --------------------------------------------------
     # load item list
-    with open(item_file, "r", encoding="utf-8") as f:
-        items = json.load(f)
+    # --------------------------------------------------
+    if items is not None:
+        final_items = items
+    else:
+        with open(item_file, "r", encoding="utf-8") as f:
+            final_items = json.load(f)
 
-    if only_items:
-        items = [i for i in items if i in only_items]
+        if only_items:
+            final_items = [i for i in final_items if i in only_items]
 
-    # prefix × suffix
     combos = build_combos()
 
-    # output file name theo item file
-    out_file = RESULT_DIR / f"{item_file.stem}_price.json"
+    if item_file:
+        out_file = RESULT_DIR / f"{item_file.stem}_price.json"
+    else:
+        out_file = RESULT_DIR / "custom_price.json"
 
     # --------------------------------------------------
-    # LOAD OLD RESULTS (ghi đè combo cũ)
+    # LOAD OLD RESULTS
     # --------------------------------------------------
     if out_file.exists():
         with open(out_file, "r", encoding="utf-8") as f:
@@ -60,28 +85,59 @@ def run_price_check(item_file: Path, only_items=None):
     # --------------------------------------------------
     # RUN
     # --------------------------------------------------
-    for item_name in items:
-        print(f"\n=== CHECKING {item_name} ===")
+    for item_name in final_items:
+        if should_stop and should_stop():
+            log("⛔ Stopped by user")
+            return
+
+        log(f"\n=== CHECKING {item_name} ===")
 
         for prefix, suffix in combos:
+            if should_stop and should_stop():
+                log("⛔ Stopped by user")
+                return
+
             try:
                 query = build_query(item_name, prefix, suffix)
                 search_id, item_id = client.search(query)
 
+                key = (item_name, prefix["text"], suffix["text"])
+
+                # ❌ không có người bán → giá = 0
                 if not item_id:
+                    log(
+                        f"[PRICE] {item_name} | "
+                        f"{prefix['text']} + {suffix['text']} "
+                        f"=> 0 chaos"
+                    )
+
+                    result_map[key] = {
+                        "item": item_name,
+                        "prefix": prefix["text"],
+                        "suffix": suffix["text"],
+                        "price": {
+                            "amount": 0,
+                            "currency": "chaos"
+                        }
+                    }
                     continue
 
+                # -------------------------------
+                # fetch price
+                # -------------------------------
                 price = client.fetch(item_id, search_id)
-                if not price:
+
+                if price is None:
                     continue
 
-                print(
+                msg = (
                     f"[PRICE] {item_name} | "
                     f"{prefix['text']} + {suffix['text']} "
                     f"=> {price['amount']} {price['currency']}"
                 )
 
-                key = (item_name, prefix["text"], suffix["text"])
+                log(msg)
+
                 result_map[key] = {
                     "item": item_name,
                     "prefix": prefix["text"],
@@ -90,12 +146,18 @@ def run_price_check(item_file: Path, only_items=None):
                 }
 
             except Exception as e:
-                print("❌ ERROR combo:")
-                print(item_name, "|", prefix["text"], "|", suffix["text"])
-                print(e)
+                log("❌ ERROR combo:")
+                log(f"{item_name} | {prefix['text']} | {suffix['text']}")
+                log(str(e))
 
     # --------------------------------------------------
     # SAVE
     # --------------------------------------------------
-    save_results(result_map, out_file)
+    save_results(result_map, out_file, log_hook=log_hook)
 
+    # optional export excel
+    try:
+        export_price_to_excel(out_file)
+        log("📊 Exported to Excel")
+    except Exception as e:
+        log(f"⚠️ Excel export failed: {e}")

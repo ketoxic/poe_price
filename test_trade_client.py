@@ -1,4 +1,6 @@
 import json
+
+from core.currency import load_currency_rate
 from core.trade_client import TradeClient
 
 
@@ -54,4 +56,5 @@ def main():
 
 
 if __name__ == "__main__":
+    load_currency_rate("Keepers")
     main()

@@ -10,7 +10,7 @@ LEAGUE = "Keepers"   # đổi khi cần
 
 HEADERS = {
     "User-Agent": "Ket",
-    "From":"phuket_92@gmail.com"
+    "From": "phuket_92@gmail.com"
 }
 
 
@@ -25,7 +25,6 @@ class TradeClient:
     def _post(self, url, json):
         return self.session.post(url, json=json)
 
-    @rate_limited()
     def _get(self, url, params):
         return self.session.get(url, params=params)
     # --------------------------------------------------

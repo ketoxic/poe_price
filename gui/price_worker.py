@@ -1,6 +1,4 @@
 from PyQt5.QtCore import QThread, pyqtSignal
-import time
-
 from core.price_runner import run_price_check
 
 
@@ -9,17 +7,17 @@ class PriceWorker(QThread):
     finished = pyqtSignal()
     error = pyqtSignal(str)
 
-    def __init__(self, item_file):
+    def __init__(self, items):
         super().__init__()
-        self.item_file = item_file
+        self.items = items
         self._running = True
 
     def stop(self):
         self._running = False
+        self.log.emit("Stopping...")
 
     def run(self):
         try:
-            # inject hook để log + check stop
             def log_hook(msg: str):
                 self.log.emit(msg)
 
@@ -27,12 +25,13 @@ class PriceWorker(QThread):
                 return not self._running
 
             run_price_check(
-                self.item_file,
+                items=self.items,
                 log_hook=log_hook,
                 should_stop=should_stop
             )
 
         except Exception as e:
             self.error.emit(str(e))
+            return
 
         self.finished.emit()
