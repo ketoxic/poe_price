@@ -9,26 +9,42 @@ _DIVINE_TO_CHAOS = None
 
 
 def load_currency_rate(league: str):
-    global _DIVINE_TO_CHAOS
-
+    url = "https://poe.ninja/api/data/currencyoverview"
     params = {
         "league": league,
         "type": "Currency"
     }
 
-    resp = requests.get(POE_NINJA_URL, params=params, timeout=10)
-    resp.raise_for_status()
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+    except Exception as e:
+        print(f"[ERROR] Failed to fetch currency data: {e}")
+        return {}
 
-    data = resp.json()
+    rates = {}
 
-    for line in data.get("lines", []):
-        if line.get("currencyTypeName") == "Divine Orb":
-            _DIVINE_TO_CHAOS = line["chaosEquivalent"]
-            print(f"[RATE] 1 Divine = {_DIVINE_TO_CHAOS} chaos")
-            return
+    try:
+        lines = data.get("lines", [])
 
-    raise RuntimeError("Divine Orb rate not found from poe.ninja")
+        for item in lines:
+            name = item.get("currencyTypeName")
+            chaos = item.get("chaosEquivalent")
 
+            if name and chaos is not None:
+                rates[name] = chaos
+
+    except Exception as e:
+        print(f"[ERROR] Failed to parse currency data: {e}")
+        return {}
+
+    # debug info
+    divine = rates.get("Divine Orb")
+    if divine:
+        print(f"[RATE] 1 Divine Orb = {divine:.2f} chaos")
+
+    return rates
 
 def to_chaos(amount: float, currency: str) -> Optional[float]:
     if currency == "chaos":
