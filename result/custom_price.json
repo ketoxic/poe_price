@@ -94,7 +94,7 @@
     "prefix": "#% increased Effect",
     "suffix": "#% additional Elemental Resistances during Effect",
     "price": {
-      "amount": 206.3,
+      "amount": 232.9,
       "currency": "chaos"
     }
   },
@@ -112,7 +112,7 @@
     "prefix": "#% increased Effect",
     "suffix": "#% increased Critical Strike Chance during Effect",
     "price": {
-      "amount": 825.2,
+      "amount": 931.6,
       "currency": "chaos"
     }
   },
@@ -130,7 +130,7 @@
     "prefix": "#% increased Effect",
     "suffix": "#% increased Movement Speed during Effect",
     "price": {
-      "amount": 90,
+      "amount": 99,
       "currency": "chaos"
     }
   },
@@ -139,7 +139,7 @@
     "prefix": "#% increased Effect",
     "suffix": "#% reduced Effect of Curses on you during Effect",
     "price": {
-      "amount": 206.3,
+      "amount": 232.9,
       "currency": "chaos"
     }
   },
@@ -175,7 +175,7 @@
     "prefix": "Gain # Charge when you are Hit by an Enemy",
     "suffix": "#% increased Evasion Rating during Effect",
     "price": {
-      "amount": 50,
+      "amount": 40,
       "currency": "chaos"
     }
   },
@@ -193,7 +193,7 @@
     "prefix": "Gain # Charge when you are Hit by an Enemy",
     "suffix": "#% reduced Effect of Curses on you during Effect",
     "price": {
-      "amount": 206.3,
+      "amount": 160,
       "currency": "chaos"
     }
   },
@@ -604,6 +604,60 @@
   },
   {
     "item": "Bismuth Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% reduced Effect of Curses on you during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% additional Elemental Resistances during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% increased Armour during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% increased Critical Strike Chance during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% increased Evasion Rating during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
+    "prefix": "Gain a Flask Charge when you deal a Critical Strike",
+    "suffix": "#% increased Movement Speed during Effect",
+    "price": {
+      "amount": 0,
+      "currency": "chaos"
+    }
+  },
+  {
+    "item": "Diamond Flask",
     "prefix": "Gain a Flask Charge when you deal a Critical Strike",
     "suffix": "#% reduced Effect of Curses on you during Effect",
     "price": {

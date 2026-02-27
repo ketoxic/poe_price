@@ -1,27 +1,53 @@
-from core.craft_cost import CraftMethod, print_comparison
-from core.currency import load_currency_rate
+import requests
+import json
 
-rates = load_currency_rate("Keepers")
+LEAGUE = "Keepers"
 
-methods = [
-    CraftMethod(
-        "Harvest",
-        {"Vivid Lifeforce": 9300}
-    ),
-    CraftMethod(
-        "Alt+Aug",
-        {
-            "alt": 2767,
-            "aug": 679
-        }
-    ),
-    CraftMethod(
-        "Alch + Scour",
-        {
-            "alc": 959,
-            "scour": 958
-        }
-    )
-]
+API = "https://poe.ninja/poe1/api/economy/exchange/current/overview"
 
-print_comparison(methods, rates)
+
+def main():
+    print("=== TEST EXCHANGE CURRENT API ===\n")
+
+    r = requests.get(API, params={
+        "league": LEAGUE,
+        "type": "Currency"
+    }, timeout=10)
+
+    r.raise_for_status()
+    data = r.json()
+
+    print("TOP LEVEL KEYS:", data.keys())
+
+    lines = data.get("lines", [])
+    print("TOTAL CURRENCIES RETURNED:", len(lines))
+
+    print("\n=== ALL IDS RETURNED ===\n")
+    ids = sorted([item.get("id") for item in lines if item.get("id")])
+    for cid in ids:
+        print(cid)
+
+    print("\n=== CHECK SPECIFIC CURRENCIES ===\n")
+    targets = [
+        "divine",
+        "chaos",
+        "alteration",
+        "augmentation",
+        "alchemy",
+        "scouring"
+    ]
+
+    id_set = set(ids)
+
+    for t in targets:
+        print(f"{t:<15} ->", "FOUND" if t in id_set else "MISSING")
+
+    print("\n=== SAMPLE ENTRY (DIVINE IF EXISTS) ===\n")
+    for item in lines:
+        if item.get("id") == "divine":
+            print(json.dumps(item, indent=2))
+            break
+
+
+if __name__ == "__main__":
+    main()

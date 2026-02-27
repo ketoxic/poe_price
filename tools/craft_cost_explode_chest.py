@@ -5,11 +5,13 @@ rates = load_currency_rate("Keepers")
 
 methods = [
     CraftMethod(
-        "Harvest",
-        {"Vivid Lifeforce": 9300}
+        "Reforge defense",
+        {
+            "vivid": 9300
+        }
     ),
     CraftMethod(
-        "Alt+Aug",
+        "Alt + Aug",
         {
             "alt": 2767,
             "aug": 679
@@ -18,8 +20,14 @@ methods = [
     CraftMethod(
         "Alch + Scour",
         {
-            "alc": 959,
+            "alch": 959,
             "scour": 958
+        }
+    ),
+    CraftMethod(
+        "Chaos",
+        {
+            "chaos": 1017
         }
     )
 ]
