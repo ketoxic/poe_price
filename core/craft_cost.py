@@ -130,13 +130,21 @@ def print_comparison(methods, currency_rates):
             cid = resolve_currency_name(curr, currency_rates)
             used_ids.add(cid)
 
-    # ---- In rate các currency liên quan (không reverse nữa) ----
+    # ---- In rate các currency liên quan (có reverse) ----
+    print("\n=== Currency Rates ===")
+
     for cid in sorted(used_ids):
         if cid not in currency_rates or cid == "chaos":
             continue
 
         rate = currency_rates[cid]
-        print(f"[RATE] 1 {cid} = {rate:.4f} chaos")
+
+        if rate > 0:
+            reverse = 1 / rate
+            print(
+                f"[RATE] 1 {cid:<15} = {rate:>10.4f} chaos | "
+                f"1 chaos = {reverse:>10.4f} {cid}"
+            )
 
     # ---- Tính cost trước để sort ----
     results = []
@@ -153,10 +161,9 @@ def print_comparison(methods, currency_rates):
 
         print(
             f"{method.name:<20}: "
-            f"{total:.2f} chaos "
-            f"({divine:.2f} div)"
+            f"{total:>10.2f} chaos "
+            f"({divine:>6.2f} div)"
         )
-
 
 def detailed_breakdown(method: CraftMethod, currency_rates: Dict[str, float]):
     print(f"\n=== {method.name} ===")

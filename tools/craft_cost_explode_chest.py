@@ -20,14 +20,14 @@ methods = [
     CraftMethod(
         "Alch + Scour",
         {
-            "alch": 959,
-            "scour": 958
+            "alch": 963,
+            "scour": 963
         }
     ),
     CraftMethod(
         "Chaos",
         {
-            "chaos": 1017
+            "chaos": 963
         }
     )
 ]
