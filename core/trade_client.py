@@ -6,7 +6,7 @@ from core.rate_limit import rate_limited
 from core.currency import to_chaos
 
 BASE_URL = "https://www.pathofexile.com/api/trade"
-LEAGUE = "Keepers"   # đổi khi cần
+LEAGUE = "Mirage"   # đổi khi cần
 
 HEADERS = {
     "User-Agent": "Ket",
